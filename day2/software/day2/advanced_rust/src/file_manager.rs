@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{fs::File, ops::AddAssign, path::Path};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -31,8 +31,20 @@ impl FileManager {
             vec_file.push(into_string);
         }
         Ok(vec_file)
-
     }
-
-    //pub fn read_file(path: String) -> String
+    
+    pub fn read_file(path: String) -> Result<String, FileManagerError> {
+        let mut content: String =  String::from("");
+        let perm = File::options().read(true).open(&path);
+        match perm {
+            Ok(_) => {},
+            Err(_) => { return Err(FileManagerError::PermissionDenied); }
+        }
+        if !Path::new(&path).exists() {
+            return Err(FileManagerError::FileNotFound);
+        }
+        let entry = std::fs::read_to_string(&path)?;
+        content.add_assign(&entry);
+        Ok(content)
+    }
 }
