@@ -4,3 +4,9 @@ pub struct Task {
     pub description: String,
     pub completed: bool
 }
+
+impl Task {
+    pub fn up(&mut self) {
+        self.completed = true
+    }
+}
