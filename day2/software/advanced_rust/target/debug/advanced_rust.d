@@ -1,0 +1,1 @@
+/home/rayan/delivery/poc_software/pool-software2026-Rayan-ouer/day2/software/advanced_rust/target/debug/advanced_rust: /home/rayan/delivery/poc_software/pool-software2026-Rayan-ouer/day2/software/advanced_rust/src/file_manager.rs /home/rayan/delivery/poc_software/pool-software2026-Rayan-ouer/day2/software/advanced_rust/src/main.rs
