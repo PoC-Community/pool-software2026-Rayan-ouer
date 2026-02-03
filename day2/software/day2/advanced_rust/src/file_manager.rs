@@ -71,4 +71,11 @@ impl FileManager {
         }
         Ok(())
     }
+
+    pub fn copy_file(src_path: String, dest_path: String) -> Result<(), FileManagerError>
+    {
+        let content = FileManager::read_file(src_path)?;
+        FileManager::write_file(dest_path, content)
+    }
+
 }
