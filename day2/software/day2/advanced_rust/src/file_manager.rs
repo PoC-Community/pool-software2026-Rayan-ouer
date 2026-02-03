@@ -1,4 +1,4 @@
-use std::{fs::File, ops::AddAssign, path::Path};
+use std::{fs::File, ops::AddAssign, path::Path, vec};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -46,5 +46,29 @@ impl FileManager {
         let entry = std::fs::read_to_string(&path)?;
         content.add_assign(&entry);
         Ok(content)
+    }
+
+    pub fn write_file(path: String, content: String) -> Result<(), FileManagerError>
+    {
+        let mut full_path: Vec<&str> = path.split("/").collect();
+        full_path.pop();
+    
+        match Path::new(&path).exists() {
+            true =>
+            {
+                let perm = File::options().read(true).open(&path);
+                match perm
+                {
+                    Ok(_) => {std::fs::write(&path, content)?;},
+                    Err(_) => { return Err(FileManagerError::PermissionDenied); }
+                }
+            },
+            false =>
+            {
+                std::fs::create_dir_all(full_path.iter().map(|i| i.to_string()).collect::<String>())?;
+                std::fs::write(&path, content)?;
+            }
+        }
+        Ok(())
     }
 }
