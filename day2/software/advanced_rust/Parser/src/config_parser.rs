@@ -1,5 +1,6 @@
-use std::collections::HashMap;
+use std::{collections::HashMap};
 use thiserror::Error;
+use crate::{FileManager, file_manager::FileManagerError};
 
 #[derive(Debug)]
 pub struct Section
@@ -11,7 +12,7 @@ pub struct Section
 #[derive(Debug)]
 pub struct Config
 {
-    pub sections: HashMap<String, Section>,
+    pub sections: HashMap<String, Section>
 }
 
 #[derive(Debug, Error)]
@@ -23,7 +24,9 @@ pub enum ConfigError {
     #[error("Duplicate key")]
     DuplicateKey(String),
     #[error("io error: {0}")]
-    Io(#[from] std::io::Error),
+    IoError(#[from] std::io::Error),
+    #[error("File Manager error")]
+    FileManagerError
 }
 
 impl Config {
@@ -50,5 +53,23 @@ impl Config {
             section.data.insert(variable_vec[0].to_string(), variable_vec[1].to_string());
         }
         Ok(Config { sections })
+    }
+
+    pub fn from_file(path: String) -> Result<Config, ConfigError> {
+        let content = FileManager::read_file(path);
+        if content.is_ok() {
+            match Config::parse(content.unwrap()) {
+                Ok(t) => { Ok(t) },
+                Err(e) => { Err(e) }
+            }
+        }
+        else {
+            Err(ConfigError::FileManagerError)
+        }
+    }
+
+    pub fn get(&self, section_name: String, key: String) -> Option<&String> {
+        let content = self::HashMap::get(&self.sections, &section_name)?;
+        return content.data.get(&key);
     }
 }
