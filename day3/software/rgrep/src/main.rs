@@ -1,6 +1,7 @@
-use std::{fs::{read_to_string}};
+use std::{fs::read_to_string};
 use clap::{Error, Parser};
 use colored::Colorize;
+use colored::ColoredString;
 
 #[derive(Parser, Debug)]
 pub struct Args {
@@ -12,7 +13,20 @@ pub struct Args {
     pub line_numbers: bool,
 }
 
-
+fn highlight_pattern(line: String, pattern: String, case_insensitive: bool) -> ColoredString
+{
+    if case_insensitive {
+        let lower_line: String = line.to_lowercase();
+        let lower_pattern: String = pattern.to_lowercase();
+        if lower_line.contains(&lower_pattern) {
+            return line.replace(&pattern, &pattern.red().bold().to_string()).normal();
+        }
+    }
+    else if line.contains(&pattern) {
+        return line.replace(&pattern, &pattern.red().bold().to_string()).normal();
+    }
+    line.normal()
+}
 
 
 fn print_content(line: (usize, &str), line_copy: String, pattern: &String, print_index: bool) -> ()
@@ -45,6 +59,8 @@ fn search_in_file(args: Args) -> Result<(), Error>
 
 fn main() {
     let args = Args::parse();
+    let line: String = "le software c'est cool".to_string();
 
+    println!("{}", highlight_pattern(line, args.pattern.clone(), args.case_insensitive));
     let _ = search_in_file(args);
 }
