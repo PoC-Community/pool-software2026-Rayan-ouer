@@ -7,9 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "./ui/button";
 
 export function DiskProgressLine({ data }: { data: Disk }) {
-  const total = (data.total / 100000000000).toFixed(2);
-  const used = (data.used / 100000000000).toFixed(2);
-  const available = (data.available / 100000000000).toFixed(2);
+  const total = (data.total / 1000_000_000).toFixed(2);
+  const used = (data.used / 1000_000_000).toFixed(2);
+  const available = (data.available / 1000_000_000).toFixed(2);
   const progress =
     data.total > 0 ? Math.floor((data.used / data.total) * 100) : 0;
 

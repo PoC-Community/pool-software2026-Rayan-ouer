@@ -21,6 +21,7 @@ impl CPU {
     }
     pub fn update(&mut self, sys: &mut System)
     {
+        self.computer_cores.clear();
         sys.refresh_cpu_usage();
         std::thread::sleep(std::time::Duration::from_millis(100));
         sys.refresh_cpu_usage();

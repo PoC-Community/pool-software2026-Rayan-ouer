@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 use sysinfo::{Disks, System};
 
-use crate::disk;
-
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Pid {
     pid_name: String,
@@ -23,6 +21,10 @@ impl DiskInfo {
         DiskInfo { total: 0, used: 0, available: 0, pids_vec: Vec::new() }
     }
     pub fn update(&mut self, sys: &System) {
+        self.total = 0;
+        self.used = 0;
+        self.available = 0;
+        self.pids_vec.clear();
         let disks: Disks = Disks::new_with_refreshed_list();
         for disk in disks.list() {
             self.total += disk.total_space();
