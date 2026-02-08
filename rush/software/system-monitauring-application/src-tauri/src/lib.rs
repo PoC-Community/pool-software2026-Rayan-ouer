@@ -4,6 +4,7 @@ mod disk;
 mod host;
 mod memory;
 mod network;
+mod gpu;
 mod main_module;
 use once_cell::sync::Lazy;
 use std::sync::Mutex;

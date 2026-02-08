@@ -4,6 +4,7 @@ import { TrendingUp } from "lucide-react"
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
 import { Network } from "@/model/networkSchema"
 import { useMemo } from "react"
+import { ExportButton } from "./ExportButton"
 
 import {
   Card,
@@ -108,6 +109,7 @@ export function ChartRadialStacked({ data }: { data: Network }) {
             {data.received.toFixed(2)} Received / {data.transmitted.toFixed(2)} Transmitted | Since computer starting
           </span>
           <Button size="sm">+</Button>
+          <ExportButton data={data}></ExportButton>
         </CardFooter>
       </Card>
     )

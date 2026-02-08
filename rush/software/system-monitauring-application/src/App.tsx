@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import Page from "./components/Dashboard.tsx";
+import DashboardSystem from './components/Dashboard';
 
 import "./App.css";
 
@@ -10,7 +10,7 @@ function App() {
 	return (
 		<body>
 			<QueryClientProvider client={queryClient}>
-				<Page></Page>
+				<DashboardSystem />
 			</QueryClientProvider>
 		</body>
 	);

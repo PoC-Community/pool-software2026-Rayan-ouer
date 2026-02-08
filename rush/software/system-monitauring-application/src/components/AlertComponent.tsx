@@ -2,15 +2,14 @@ import { Module } from "@/model/ModuleSchema";
 import { Button } from "./ui/button";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { save } from "@tauri-apps/plugin-dialog";
-import DownloadIcon from '../assets/download.svg?react';
-
+import { Cpu } from "@/model/cpuSchema";
 
 type ModalContentProps = {
   closeModal: () => void;
-  data: Module;
+  data: Cpu;
 }
 
-const handleDownloadTauri = async (data: Module) => {
+const handleDownloadTauri = async (data: Cpu) => {
     try {
         const filePath = await save({defaultPath: "computerdata.json", filters: [{ name: "JSON", extensions: ["json"] }],
         });
@@ -22,7 +21,7 @@ const handleDownloadTauri = async (data: Module) => {
     }
 };
 
-export function ExportComponent({ closeModal, data }: ModalContentProps) {
+export function AlertComponent({ closeModal, data }: ModalContentProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
@@ -38,11 +37,14 @@ export function ExportComponent({ closeModal, data }: ModalContentProps) {
 
         <div className="flex justify-between mt-4">
           <Button className="bg-red-500 hover:bg-red-600 text-white" onClick={closeModal}>
-            x
+            Close
           </Button>
           <Button onClick={() => handleDownloadTauri(data)}>
-            <DownloadIcon />
+            Export
           </Button>
+        <Button onClick={() => handleDownloadTauri(data)}>
+            +
+        </Button>
         </div>
       </div>
     </div>

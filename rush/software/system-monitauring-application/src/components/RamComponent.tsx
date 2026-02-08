@@ -4,6 +4,8 @@ import { useMemo } from "react"
 import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart, Cell } from "recharts"
 import { Memory } from "@/model/memorySchema"
+import { ExportButton } from "./ExportButton"
+
 
 import {
   Card,
@@ -103,6 +105,7 @@ export function RamChartPieDonut({ data }: {data: Memory}) {
           Total: {memory_total.toPrecision(2)} GB | Used: {memory_used.toPrecision(2)} GB | Available: {memory_available} GB
         </span>
         <Button size="sm">+</Button>
+        <ExportButton data={data}></ExportButton>
       </CardFooter>
       </Card>
     )

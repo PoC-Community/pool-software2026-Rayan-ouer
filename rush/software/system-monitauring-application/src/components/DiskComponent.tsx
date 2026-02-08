@@ -5,6 +5,7 @@ import { Disk } from "@/model/diskSchema";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "./ui/button";
+import { ExportButton } from "./ExportButton"
 
 export function DiskProgressLine({ data }: { data: Disk }) {
   const total = (data.total / 1000_000_000).toFixed(2);
@@ -40,6 +41,7 @@ export function DiskProgressLine({ data }: { data: Disk }) {
       </div>
    <CardFooter className="flex justify-between items-center gap-2 px-4 py-2 bg-muted rounded-b-md">
         <Button size="sm" className="ml-auto">+</Button>
+        <ExportButton data={data}></ExportButton>
       </CardFooter>
     </Card>
   );

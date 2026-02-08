@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <title>download</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="download">
+      <g id="download-2" data-name="download">
+        <rect width="24" height="24" fill="currentColor" opacity="0"/>
+        <rect x="4" y="18" width="16" height="2" rx="1" ry="1" fill="currentColor"/>
+        <rect x="3" y="17" width="4" height="2" rx="1" ry="1" transform="translate(-13 23) rotate(-90)" fill="currentColor"/>
+        <rect x="17" y="17" width="4" height="2" rx="1" ry="1" transform="translate(1 37) rotate(-90)" fill="currentColor"/>
+        <path d="M12,15a1,1,0,0,1-.58-.18L7.42,12a1,1,0,0,1-.24-1.39,1,1,0,0,1,1.4-.24L12,12.76,15.4,10.2a1,1,0,0,1,1.2,1.6l-4,3A1,1,0,0,1,12,15Z" fill="currentColor"/>
+        <path d="M12,13a1,1,0,0,1-1-1V4a1,1,0,0,1,2,0v8A1,1,0,0,1,12,13Z" fill="currentColor"/>
+      </g>
+    </g>
+  </g>
+</svg>

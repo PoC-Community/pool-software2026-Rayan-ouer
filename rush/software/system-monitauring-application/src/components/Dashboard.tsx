@@ -10,6 +10,8 @@ import { Module, ModuleSchema } from "@/model/ModuleSchema"
 import { DiskInfo } from "@/model/diskSchema"
 import { Core } from "@/model/cpuSchema"
 import { DiskProgressLine } from "./DiskComponent"
+import { AlertComputer } from "@/model/alertSchema"
+import { GpuRadialTemperature } from "./GpuComponent"
 
 import {
   Breadcrumb,
@@ -26,7 +28,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { createColumnHelper } from "@tanstack/react-table"
-import { Cpu } from "@/model/cpuSchema"
+import { useState, useEffect} from "react"
+
 
 const columnPidHelper = createColumnHelper<DiskInfo>();
 const columnsPid = [
@@ -56,6 +59,7 @@ const column_core = [
 
 
 export default function DashboardSystem() {
+	const [ alert, setAlert ] = useState<AlertComputer[]>([]);
     const { data, isLoading, error} = useQuery({
         queryKey: ["data"],
         queryFn: async () => {
@@ -70,6 +74,7 @@ export default function DashboardSystem() {
         return <ProgressLine />
     if (error || data === undefined)
         return <div>Error: {(error as Error).message}</div>
+
     return (
       <SidebarProvider>
         <SidebarInset>
@@ -109,18 +114,19 @@ export default function DashboardSystem() {
           <main className="flex-1 p-4">
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <CpuChartPieDonut data={data.cpu}></CpuChartPieDonut>
+                <CpuChartPieDonut data={data.cpu} alert={alert}></CpuChartPieDonut>
                 <ChartRadialStacked data={data.network}></ChartRadialStacked>
                 <RamChartPieDonut data={data.memory} />
 				<DataTable<Core, any> data={data.cpu.computer_cores} columns={column_core}></DataTable>
 				<DiskProgressLine data={data.disk} />
+				<GpuRadialTemperature data={data.gpu} />
             </div>
             <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
           </div>
         </main>
         <aside className="flex-[0.5]">
           <div className="w-full h-full flex-col justify-center items-center p-4 gap-4">
-          <DataTable<DiskInfo, any> data={(data.disk.pids_vec.sort((a, b) => b.usage > a.usage ? 1 : -1).slice(0, 20))} columns={columnsPid}></DataTable>
+          <DataTable<DiskInfo, any> data={(data.disk.pids_vec.sort((a, b) => b.usage > a.usage ? 1 : -1).slice(0, 23))} columns={columnsPid}></DataTable>
           </div>
         </aside>
         </div>

@@ -4,6 +4,8 @@ import { useMemo } from "react"
 import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart, Cell } from "recharts"
 import { Cpu } from "@/model/cpuSchema"
+import { AlertButton } from "./AlertButton"
+import downloadSvg from './assets/download.svg';
 
 import {
   Card,
@@ -19,8 +21,9 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import { ExportButton } from "./ExportButton"
+import { AlertComputer } from "@/model/alertSchema"
 import { Button } from "./ui/button"
-
 export const description = "A donut chart with text"
 
 const chartConfig = {
@@ -30,7 +33,7 @@ const chartConfig = {
     }
 } satisfies ChartConfig
 
-export function CpuChartPieDonut({ data }: {data: Cpu}) {
+export function CpuChartPieDonut({ data, alert }: {data: Cpu; alert: AlertComputer[]}) {
 	const chartData = useMemo(() => [
 	  { name: "Used", usage: data.usage },
 	  { name: "Free", usage: 100 - data.usage }
@@ -99,7 +102,7 @@ export function CpuChartPieDonut({ data }: {data: Cpu}) {
         <span className="text-sm font-bold">
           {data.computer_cores.length} Cores {data.computer_cores[0].vendor}
         </span>
-        <Button size="sm">+</Button>
+		<ExportButton data={data}></ExportButton>
       </CardFooter>
       </Card>
     )

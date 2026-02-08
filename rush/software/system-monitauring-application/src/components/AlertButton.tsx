@@ -1,11 +1,10 @@
 import {useState} from "react";
-import { createPortal } from 'react-dom';
 import { Button } from "./ui/button";
 import { Module } from "@/model/ModuleSchema";
-import { ExportComponent } from "./ExportComponent";
-import DownloadIcon from '../assets/download.svg?react';
+import { AlertComputer } from "@/model/alertSchema";
+import { AlertComponent } from "./AlertComponent";
 
-export function ExportButton({ data }: {data: any}) {
+export function AlertButton({ data, alert }: {data: any, alert: AlertComputer[]}) {
     const [showModal, setShowModal] = useState(false);
 
     const toggleModal = () => {
@@ -14,10 +13,10 @@ export function ExportButton({ data }: {data: any}) {
     return (
         <>
         <Button size="sm" onClick={toggleModal}>
-            <DownloadIcon />
+            +
         </Button>
         {showModal && (
-            <ExportComponent data={data} closeModal={() => setShowModal(false)}/>
+            <AlertComponent data={data} closeModal={() => setShowModal(false)}/>
         )
         }
         </>

@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use crate::cpu::CPU;
+use crate::gpu::GPU;
 use crate::disk::DiskInfo;
 use crate::memory::Memory;
 use crate::network::Network;
@@ -13,6 +14,7 @@ pub struct Module {
     memory: Memory,
     network: Network,
     host: Host,
+    gpu: GPU,
     #[serde(skip)]
     sys: System
 }
@@ -25,6 +27,7 @@ impl Clone for Module {
             memory: self.memory.clone(),
             network: self.network.clone(),
             host: self.host.clone(),
+            gpu: self.gpu.clone(),
             sys: System::new_all(),
         }
     }
@@ -38,7 +41,8 @@ impl Module {
         let memory = Memory::new();
         let network= Network::new();
         let host =  Host::new();
-        Module { cpu, disk: disk, memory: memory, network: network, host: host, sys }
+        let gpu = GPU::new();
+        Module { cpu, disk: disk, memory: memory, network: network, host: host, gpu: gpu, sys }
     }
 
     pub fn update(&mut self) {
@@ -48,5 +52,6 @@ impl Module {
         self.memory.update(&self.sys);
         self.network.update();
         self.host.update();
+        self.gpu.update();
     }
 }
