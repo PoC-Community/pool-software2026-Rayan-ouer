@@ -2,7 +2,7 @@ use sysinfo::{Networks};
 use serde::{Deserialize, Serialize};
 
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize,Clone)]
 pub struct Network {
     received: f64,
     transmitted: f64,

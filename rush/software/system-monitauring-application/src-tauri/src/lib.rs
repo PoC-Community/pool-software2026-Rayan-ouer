@@ -5,15 +5,23 @@ mod host;
 mod memory;
 mod network;
 mod main_module;
+use once_cell::sync::Lazy;
+use std::sync::Mutex;
 
 use main_module::Module;
 
+fn create_module() -> Mutex<Module> {
+    let module = Module::new();
+    Mutex::new(module)
+}
+
+static MODULE: Lazy<Mutex<Module>> = Lazy::new(create_module);
+
 #[tauri::command]
-fn get_module() -> Module
-{
-    let mut module: Module = Module::new();
+fn get_module() -> Module {
+    let mut module = MODULE.lock().unwrap();
     module.update();
-    module
+    module.clone()
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

@@ -26,4 +26,5 @@ sysinfo = "0.38.0"
 network-speed = "0.2.4"
 tauri-plugin-fs = "2.4.5"
 tauri-plugin-dialog = "2"
+once_cell = "1.21.3"
 

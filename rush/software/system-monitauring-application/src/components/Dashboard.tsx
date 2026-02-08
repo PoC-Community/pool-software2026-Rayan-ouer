@@ -1,4 +1,4 @@
-import { PidTable } from "./PidTable"
+import { DataTable } from "./PidTable"
 import { ProgressLine } from "./LoadingComponent"
 import { CpuChartPieDonut } from "./CpuComponent"
 import { RamChartPieDonut } from "./RamComponent"
@@ -7,7 +7,9 @@ import { useQuery } from '@tanstack/react-query'
 import { invoke } from "@tauri-apps/api/core";
 import { ExportButton } from "./ExportButton"
 import { Module, ModuleSchema } from "@/model/ModuleSchema"
-import { Disk } from "@/model/diskSchema"
+import { DiskInfo } from "@/model/diskSchema"
+import { Core } from "@/model/cpuSchema"
+import { DiskProgressLine } from "./DiskComponent"
 
 import {
   Breadcrumb,
@@ -24,19 +26,34 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { createColumnHelper } from "@tanstack/react-table"
+import { Cpu } from "@/model/cpuSchema"
 
-const columnHelper = createColumnHelper<Disk>();
-const columns = [
-  columnHelper.accessor("pid_name", {
+const columnPidHelper = createColumnHelper<DiskInfo>();
+const columnsPid = [
+  columnPidHelper.accessor("pid_name", {
     header: () => "Process",
     cell: (info) => info.getValue(),
   }),
 
-  columnHelper.accessor("usage", {
+  columnPidHelper.accessor("usage", {
     header: () => <p>Usage</p>,
     cell: (info) => info.getValue()
   }),
 ];
+
+const columnCoreHelper = createColumnHelper<Core>();
+const column_core = [
+	columnCoreHelper.accessor("name", {
+		header: () => "Core",
+		cell: (info) => info.getValue()
+	}),
+
+  columnCoreHelper.accessor("usage", {
+	header: () => "Usage",
+	cell: (info) => info.getValue().toString()
+  })
+]
+
 
 export default function DashboardSystem() {
     const { data, isLoading, error} = useQuery({
@@ -57,7 +74,8 @@ export default function DashboardSystem() {
       <SidebarProvider>
         <SidebarInset>
           <header className="relative flex h-16 items-center gap-2 px-4 shrink-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-            <div className="flex items-center gap-2 px-4">
+
+            <div className="flex items-center gap-2">
               <Separator
                 orientation="vertical"
                 className="mr-2 data-[orientation=vertical]:h-4"
@@ -71,16 +89,21 @@ export default function DashboardSystem() {
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem className="text-lg font-bold">
-                    <BreadcrumbPage>
-                    </BreadcrumbPage>
-                    {data.host.os}
+                    <BreadcrumbPage>{data.host.os}</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-lg font-bold">
-                System Monitauring
-                </div>
             </div>
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-lg font-bold">
+              System Monitoring
+            </div>
+            <BreadcrumbItem  className="ml-auto text-lg font-bold text-gray-500">
+              {data.host.host_name}
+            </BreadcrumbItem>
+                 <Separator
+                orientation="vertical"
+                className="mr-2 data-[orientation=vertical]:h-4"
+              />
           </header>
           <div className="flex">
           <main className="flex-1 p-4">
@@ -89,22 +112,21 @@ export default function DashboardSystem() {
                 <CpuChartPieDonut data={data.cpu}></CpuChartPieDonut>
                 <ChartRadialStacked data={data.network}></ChartRadialStacked>
                 <RamChartPieDonut data={data.memory} />
-              <div className="bg-muted/50 aspect-video rounded-xl" />
+				<DataTable<Core, any> data={data.cpu.computer_cores} columns={column_core}></DataTable>
+				<DiskProgressLine data={data.disk} />
             </div>
             <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
           </div>
         </main>
         <aside className="flex-[0.5]">
           <div className="w-full h-full flex-col justify-center items-center p-4 gap-4">
-          <PidTable<Disk, any> data={(data.disk.pids_vec.sort((a, b) => b.usage > a.usage ? 1 : -1).slice(0, 20))} columns={columns}></PidTable>
+          <DataTable<DiskInfo, any> data={(data.disk.pids_vec.sort((a, b) => b.usage > a.usage ? 1 : -1).slice(0, 20))} columns={columnsPid}></DataTable>
           </div>
         </aside>
         </div>
-        <footer className="w-full bg-muted/50 p-4 flex justify-end">
-          <div className="mt-4">
-            <ExportButton data={data}/>
-            </div>
-        </footer>
+		<div className="fixed bottom-4 right-4 z-50">
+			<ExportButton data={data} />
+			</div>
         </SidebarInset>
       </SidebarProvider>
     )

@@ -5,8 +5,13 @@ const PidSchema = z.object({
     usage: z.number()
 })
 
-export const DiskSchema = z.object({
+export const DiskInfoSchema = z.object({
+    total: z.number(),
+    used: z.number(),
+    available: z.number(),
     pids_vec: z.array(PidSchema)
 })
 
-export type Disk = z.infer<typeof PidSchema>
+
+export type DiskInfo = z.infer<typeof PidSchema>
+export type Disk = z.infer<typeof DiskInfoSchema>

@@ -3451,6 +3451,7 @@ name = "system-monitauring-application"
 version = "0.1.0"
 dependencies = [
  "network-speed",
+ "once_cell",
  "serde",
  "serde_json",
  "sysinfo",

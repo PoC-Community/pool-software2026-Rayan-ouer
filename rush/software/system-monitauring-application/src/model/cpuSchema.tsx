@@ -12,4 +12,6 @@ export const CpuSchema = z.object({
     computer_cores: z.array(CoreSchema)
 })
 
+
+export type Core = z.infer<typeof CoreSchema>
 export type Cpu = z.infer<typeof CpuSchema>

@@ -1,7 +1,7 @@
 use sysinfo::System;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Host {
     name: String,
     kernel: String,
